@@ -1,0 +1,30 @@
+Channel	LFF (HPF)	HFF (LPF)	60 Hz Notch	Location/
+Variable	Sampling	P-P range	Input Channel
+EEG	0.15 Hz (hardware)	64 Hz	Off	F3	256	500 uV	17
+EEG	0.15 Hz	64 Hz	Off	F4	256	500 uV	18
+EEG	0.15 Hz	64 Hz	Off	C3	256	500 uV	5
+EEG	0.15 Hz	64 Hz	Off	C4	256	500 uV	6
+EEG	0.15 Hz	64 Hz	Off	O1	256	500 uV	7
+EEG	0.15 Hz	64 Hz	Off	O2	256	500 uV	8
+EEG	0.15 Hz	64 Hz	off	T4	256	500 uV	20
+EEG	0.15 Hz	64 Hz	Off	M1	256	500 uV	9
+EEG	0.15 Hz	64 Hz	Off	M2	256	500 uV	10
+EOG	0.15 Hz	64 Hz	Off	E1	256	500 uV	11
+EOG	0.15 Hz	64 Hz	Off	E2	256	500 uV	12
+ECG	0.15 Hz	64 Hz	On	ECG 1	128	10 mV	13
+ECG	0.15 Hz	64 Hz	On	ECG 2	128	10 mV	14
+EMG	0.15 Hz	128 Hz 	Off	chin1	256	500 uV	15
+EMG	0.15 Hz	128 Hz 	Off	chin2	256	500 uV	16
+EMG	0.15 Hz	128 Hz 	Off	chin3	256	500 uV	19
+EMG	0.15 Hz	128 Hz 	Off	right arm	256	500 mV	22
+EMG	0.15 Hz	128 Hz 	Off	Left arm	256	500 mV	21
+EMG	0.15 Hz	128 Hz 	Off	right leg 	256	500 mV	2
+EMG	0.15 Hz	128 Hz 	Off	left leg	256	500 mV	3
+EMG	0.15 Hz	128 Hz 	Off	right foot	256	500 mV	24
+EMG	0.15 Hz	128 Hz 	Off	left foot	256	500 mV	23
+oximeter	Off	Off	Off	oximeter	1	direct	Oximeter
+belt	0.05 Hz	15 Hz	On	thoracic	32	10 mV	31
+belt	0.05 Hz	15 Hz	On	abdomen	32	10 mV	32
+nasal pressure	Off	Off	Off	nasal pressure	32	fixed	Ext pressure
+thermistor	Off	Off	Off	thermistor	32	fixed	29
+body position	Off	Off	Off	body position	4	500 mV	1

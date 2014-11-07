@@ -13,6 +13,17 @@ curBase = 1;
 MEFUpscale = 1;
 STEPSIZE = 100000;
 
+data_key = fn_P03_create_datakey();
+
+% put data on fourier?  ask jacqueline
+% import channel information from text document input_key.txt 
+% iterate through rec names
+% for each rec name
+% for each channel, create a mef file name for each channel
+% write to mef file
+% how to add the other meta data?  does it need to be added?
+
+
 
 %% Get all the file names
 path = '/Users/jtmoyer/Documents/MATLAB/P03-PD-Sleep-Studies/PSG';
@@ -27,13 +38,6 @@ for i = 1: length(patientdir)
   end
 end
 
-% put data on fourier?  ask jacqueline
-% import channel information from text document input_key.txt 
-% iterate through rec names
-% for each rec name
-% for each channel, create a mef file name for each channel
-% write to mef file
-% 
 
 %% create empty MEF files, one for each channel in the .dat file
 % for j = 1: length(ptnames)

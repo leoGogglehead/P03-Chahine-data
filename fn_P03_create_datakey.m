@@ -1,4 +1,4 @@
-data_key = function fn_P03_create_datakey()
+function data_key = fn_P03_create_datakey()
 
   data_key.signal = {
     'EEG'
@@ -249,4 +249,4 @@ data_key = function fn_P03_create_datakey()
 
   save('data_key.mat', 'data_key');
 
-return data_key
+end

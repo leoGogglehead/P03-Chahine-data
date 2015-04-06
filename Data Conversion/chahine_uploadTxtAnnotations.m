@@ -55,11 +55,11 @@ for r = 1: length(session.data)
 end  
 
 
-%% open and read in .rev files
+%% open and read in .txt files
 if readRev
   for r = 1: length(runThese)
     animalDir = fullfile(rootDir,char(dataKey.animalId(runThese(r))));
-    f_txt2portal(session.data(r), animalDir, study);
+    f_txt2portal(session.data(r), animalDir);
   end
 end
 

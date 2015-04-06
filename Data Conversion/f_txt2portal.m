@@ -1,42 +1,40 @@
-function [] = f_txt2portal(dataset, animalDir, layerName)
-  %   This is a generic function that converts data from the raw binary *.eeg 
-  %   format to MEF. Header information for this data is contained in the
-  %   *.bni files and the data is contained in the *.eeg files.  Files are
-  %   concatenated based on the time data in the .bni file, resulting in one
-  %   file per channel which includes all data sessions.
+function [] = f_txt2portal(dataset, animalDir)
+  %   This is a generic function that uploads annotations from a text file
+  %   (output from Sandman) to the portal.  Text files should be named like
+  %   "102396_04172014_event list.txt" and a folder of the same name
+  %   (ie "102396_04172014\").
   %
   %   INPUT:
-  %       animalDir  = directory with one or more .eeg files for conversion
-  %       dataBlockLen = amount of data to pull from .eeg at one time, in hrs
-  %       gapThresh = duration of data gap for mef to call it a gap, in msec
-  %       mefBlockSize = size of block for mefwriter to wrte, in sec
+  %       dataset = portal dataset, ie session.data (I0XX_P0XX_D01)
+  %       animalDir  = directory with the .txt file
   %
   %   OUTPUT:
-  %       MEF files are written to 'mef\' subdirectory in animalDir, ie:
-  %       ...animalDir\mef\
+  %       annotations are assigned to appropriate layers and uploaded to
+  %       the portal.
   %
   %   USAGE:
-  %       f_eeg2mef('Z:\public\DATA\Animal_Data\DichterMAD\r097\Hz2000',0.1,10000,10);
+  %       f_txt2portal(session.data(1), 'Z:\public\DATA\Human_Data\SleepStudies\102396_04172014');
   %
-%    dbstop in f_txt2portal at 70
+  %    dbstop in f_txt2portal at 70
 
-  %....... Load .txt annotations  
+  %....... Directory to .txt file  
   txtDir = fullfile(animalDir,'');
     
   % scan in text data
-  try % try using the .bni extension
+  try 
     txt_name = fullfile(txtDir, [animalDir(40:end) '_event list.txt']);
-    fid = fopen(txt_name);   % METADATA IN BNI FILE
+    fid = fopen(txt_name);   
     metadata = textscan(fid,'%[^:]: %[^\n]', 12);
     textscan(fid,'%*[^\n]',1);
     textdata = textscan(fid, '%*[^\t] %[^\t] %[^\t] %[^\n]\n');
     fclose(fid);
-  catch err % if problem, try using the .bni_orig extension
+  catch err 
     fprintf('Check text file exists: %s\n', txt_name);
     rethrow(err);
   end
   
-  % store important metadata values
+  % get patient name, confirm it matches the directory name
+  % get start time of recorded file
   patientID = char(metadata{1,2}(strcmp(metadata{:,1}, 'Patient Name')));
   assert(strcmp(patientID(1:15), animalDir(40:end)),'Patient name does not match: %s\n',txt_name);
   recordTime = char(metadata{1,2}(strcmp(metadata{:,1}, 'Study Date')));
@@ -45,16 +43,16 @@ function [] = f_txt2portal(dataset, animalDir, layerName)
   dateOffset = datenum(recordTime, dateFormat); % in days
   
   % extract label, time, and duration values for each annotation
-  % remove any labels that don't have a duration value - they are redundant
+  % only use labels with a duration value - others are redundant
   keepInds = ~cellfun(@isempty,strtrim(textdata{3}));
   
   % get annotation text
   annotations = strtrim(textdata{1}(keepInds));
   
-  % get annotations times and convert to microseconds (file starts at 0:00)
+  % get annotation times, convert to microseconds (portal starts at midnight)
   times = textdata{2}(keepInds);
   times = datenum(times, 'HH:MM:SS AM') - dateOffset;
-  % convert to Usec; times after midnight need to be set to the next day
+  % convert to Usec; times recorded after 0:00 need to be set to the next day
   times(times<0) = times(times<0) + 1;
   timesUsec = (times) * 24 * 60 * 60 * 1e6; %   check = datestr(timesUsec/1e6/60/60/24);
 
@@ -63,7 +61,7 @@ function [] = f_txt2portal(dataset, animalDir, layerName)
   numStrings = cellfun(@strsplit,textdata{3}(keepInds),'UniformOutput',false);
   duration = zeros(length(numStrings),1);
   for d = 1:length(numStrings)
-    duration(d) = str2num(char(numStrings{d}(1))) * 1e6;
+    duration(d) = str2double(char(numStrings{d}(1))) * 1e6;
   end
   
   % assign annotations to different layers 
